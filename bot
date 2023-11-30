@@ -1,0 +1,55 @@
+from selenium import webdriver
+import os
+import time
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
+import sys
+import colorama
+from colorama import Fore, Back, Style
+
+colorama.init()
+
+driver = webdriver.Chrome(executable_path=r'C:\Users\Copacel\Downloads\chromedriver_win32\chromedriver.exe')
+
+def main():
+    print('Menu: ')
+    print('1. Scrape Answers')
+    print('2. Options')
+    print('3. Quit')
+    var = input('Enter an Option: ')
+
+    if var == '1':
+        op1()
+    elif var == '2':
+        op2()
+    elif var == '3':
+        op3()
+    else:
+        print('Enter a valid digit.')
+
+def op1():
+    smartscore = driver.find_element_by_xpath("/html/body/main/div/article/section[2]/section/aside/section[3]/section[1]/section[1]/span")
+
+    while smartscore < 100:
+        # right here hyperlink copy
+        driver.get("https://ixl.com/algerbra1/...")
+        time.sleep(10)
+        q1 = driver.find_element_by_class_name("yui3-practiceagent-content")
+        q2 = q1.text
+        print(q2)
+
+        driver.find_element_by_xpath('/html/body/div[9]/section/div[1]/div[1]/div[6]/div/div[1]/div/div[2]/button').click()
+
+        driver.find_element_by_xpath('/html/body/div[1]/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/button[2]').click()
+
+        answer = driver.find_element_by_xpath('/html/body/div[9]/section/div[1]/div[1]/div[6]/div/div[8]/div/div[1]/div[4]/div[2]/div/div/div/div/div[9]')
+        ans = answer.text
+        print(ans)
+
+        driver.delete_all_cookies()
+
+        driver.find_element_by_xpath('/html/body/div[9]/section/div[1]/div[1]/div[6]/div/div[8]/div/div[1]/div[1]/div[2]/button').click()
+
+main()
